@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        width: 500px;
+        margin: 0 auto;
+
+    }
+    h3 {
+        text-align: center;
+        margin-bottom: 40px; 
+    }
+    .content-message {
+        text-align: center;
+    }
+    .sms {
+        text-align: left;
+    }
+    input {
+        width: 100%;
+    }
+    form {
+        display: flex;
+    }
+    button {
+        margin-left: 10px;
+    }
+    .content {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+<body>
+    <div class="container">
+        <h3>Мессенджер</h3>
+        <div class="content-message">
+            
+            <div class="content">
+                
+                
+            </div>
+            
+            <form action="/" method="POST">
+                
+                <input type="text" name="text">
+
+                <button class="send" type="submit">Отправить</button>
+            </form>    
+        </div>
+    </div>
+    
+    <script>
+        const fistElem = document.querySelector('input[name="text"]');
+        const btn = document.querySelector('.send');
+        const content = document.querySelector('.content');
+        const requestURL = window.location.href;
+        const url = 'ws' + requestURL.split('http')[1];
+        const sms = {};
+        
+        const ws = new WebSocket('ws://localhost:3000');
+
+        btn.addEventListener('click', event => {
+            event.preventDefault();
+            let first = fistElem.value;
+          
+            ws.send(first);
+            fistElem.value = '';
+        });
+        ws.onmessage = function (event) {
+            let message = event.data;
+            content.innerHTML += `
+                <div class="sms">
+                    ${message}    
+                </div>
+            `
+        }
+        // ws.onopen();
+        
+        
+
+    </script>
+</body>
+</html>
